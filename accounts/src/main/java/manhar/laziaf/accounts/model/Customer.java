@@ -6,10 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 public class Customer extends BaseEntity {
 
@@ -21,4 +22,14 @@ public class Customer extends BaseEntity {
     private String name;
     private String email;
     private String mobileNumber;
+
+    @Builder
+    public Customer(Timestamp createdDate, String createdBy, Timestamp lastModifiedDate, String modifiedBy,
+                    Long customerId, String name, String email, String mobileNumber) {
+        super(createdDate, createdBy, lastModifiedDate, modifiedBy);
+        this.customerId = customerId;
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+    }
 }
