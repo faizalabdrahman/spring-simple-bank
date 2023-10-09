@@ -22,12 +22,12 @@ public class Account extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String accountNumber;
-    private String accountType;
+    private AccountType accountType;
     private String branchAddress;
 
     @Builder
     public Account(Timestamp createdDate, String createdBy, Timestamp lastModifiedDate, String modifiedBy,
-                   Long customerId, String accountNumber, String accountType, String branchAddress) {
+                   Long customerId, String accountNumber, AccountType accountType, String branchAddress) {
         super(createdDate, createdBy, lastModifiedDate, modifiedBy);
         this.customerId = customerId;
         this.accountNumber = accountNumber;
