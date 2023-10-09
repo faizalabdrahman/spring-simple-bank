@@ -3,6 +3,7 @@ package manhar.laziaf.accounts.services;
 import lombok.extern.slf4j.Slf4j;
 import manhar.laziaf.accounts.constants.AccountsConstants;
 import manhar.laziaf.accounts.exceptions.CustomerAlreadyExistsException;
+import manhar.laziaf.accounts.exceptions.ResourceNotFoundException;
 import manhar.laziaf.accounts.model.Account;
 import manhar.laziaf.accounts.model.AccountType;
 import manhar.laziaf.accounts.model.Customer;
@@ -41,8 +42,23 @@ public class AccountServiceImpl implements AccountService {
                     + customerDto.getMobileNumber());
         }
         Customer customer = customerMapper.customerDtoToCustomer(customerDto);
+        customer.setCreatedBy("System");
         Customer savedCustomer = customerRepository.save(customer);
         Account savedAccount = accountRepository.save(createNewAccount(customer));
+    }
+
+    @Override
+    public CustomerDto getAccount(String mobileNumber) {
+        Customer fetchedCustomer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+        Account fetchedAccount = accountRepository.findByCustomerId(fetchedCustomer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", fetchedCustomer.getCustomerId().toString())
+        );
+        CustomerDto customerDto = customerMapper.customerToCustomerDto(fetchedCustomer);
+        customerDto.setAccountDto(accountMapper.accountToAccountDto(fetchedAccount));
+
+        return customerDto;
     }
 
     private Account createNewAccount(Customer customer) {
@@ -52,6 +68,7 @@ public class AccountServiceImpl implements AccountService {
                 .accountNumber(accountNumberRandom)
                 .accountType(AccountType.SAVINGS)
                 .branchAddress(AccountsConstants.BRANCH_ADDRESS)
+                .createdBy("system")
                 .build();
 
         return account;

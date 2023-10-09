@@ -2,6 +2,7 @@ package manhar.laziaf.accounts.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import manhar.laziaf.accounts.services.AccountService;
+import manhar.laziaf.accounts.web.dto.AccountDto;
 import manhar.laziaf.accounts.web.dto.CustomerDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.OffsetDateTime;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +42,18 @@ class AccountsControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    void getAccountDetailsTest() throws Exception {
+        CustomerDto customerDto = getValidCustomerDto();
+        customerDto.setAccountDto(getValidAccountDto());
+        given(accountService.getAccount(anyString())).willReturn(customerDto);
+
+        mockMvc.perform(get("/api/v1/accounts/get")
+                        .param("mobileNumber", anyString())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
     CustomerDto getValidCustomerDto() {
         return CustomerDto.builder()
                 .createdDate(OffsetDateTime.now())
@@ -45,6 +61,16 @@ class AccountsControllerTest {
                 .name("John Doe")
                 .email("johndoe@outlook.com")
                 .mobileNumber("123456789")
+                .build();
+    }
+
+    AccountDto getValidAccountDto() {
+        return AccountDto.builder()
+                .createdDate(OffsetDateTime.now())
+                .lastModifiedDate(OffsetDateTime.now())
+                .accountType("SAVINGS")
+                .accountNumber(1L)
+                .branchAddress("Some Address")
                 .build();
     }
 }

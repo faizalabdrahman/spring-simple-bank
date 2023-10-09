@@ -1,9 +1,6 @@
 package manhar.laziaf.accounts.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,11 +19,13 @@ public class Account extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long accountNumber;
+
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
+
     private String branchAddress;
 
     @Builder
-
     public Account(Timestamp createdDate, String createdBy, Timestamp lastModifiedDate, String modifiedBy,
                    Long customerId, Long accountNumber, AccountType accountType, String branchAddress) {
         super(createdDate, createdBy, lastModifiedDate, modifiedBy);

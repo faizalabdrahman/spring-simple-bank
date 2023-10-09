@@ -4,7 +4,7 @@ import manhar.laziaf.accounts.model.Customer;
 import manhar.laziaf.accounts.web.dto.CustomerDto;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = {DateMapper.class})
+@Mapper(uses = {DateMapper.class, AccountMapper.class})
 public interface CustomerMapper {
 
     CustomerDto customerToCustomerDto(Customer customer);
