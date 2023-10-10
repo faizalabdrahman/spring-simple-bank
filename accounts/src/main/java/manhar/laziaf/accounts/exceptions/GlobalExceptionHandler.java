@@ -21,7 +21,6 @@ public class GlobalExceptionHandler {
                 .errorMessage(e.getMessage())
                 .errorTime(LocalDateTime.now())
                 .build();
-
         return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
     }
 
@@ -33,7 +32,6 @@ public class GlobalExceptionHandler {
                 .errorMessage(e.getMessage())
                 .errorTime(LocalDateTime.now())
                 .build();
-
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 }

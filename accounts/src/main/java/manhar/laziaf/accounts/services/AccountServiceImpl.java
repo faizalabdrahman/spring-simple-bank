@@ -9,6 +9,7 @@ import manhar.laziaf.accounts.model.AccountType;
 import manhar.laziaf.accounts.model.Customer;
 import manhar.laziaf.accounts.repositories.AccountRepository;
 import manhar.laziaf.accounts.repositories.CustomerRepository;
+import manhar.laziaf.accounts.web.dto.AccountDto;
 import manhar.laziaf.accounts.web.dto.CustomerDto;
 import manhar.laziaf.accounts.web.mappers.AccountMapper;
 import manhar.laziaf.accounts.web.mappers.CustomerMapper;
@@ -44,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
         Customer customer = customerMapper.customerDtoToCustomer(customerDto);
         customer.setCreatedBy("System");
         Customer savedCustomer = customerRepository.save(customer);
-        Account savedAccount = accountRepository.save(createNewAccount(customer));
+        Account savedAccount = accountRepository.save(createNewAccount(savedCustomer));
     }
 
     @Override
@@ -57,12 +58,34 @@ public class AccountServiceImpl implements AccountService {
         );
         CustomerDto customerDto = customerMapper.customerToCustomerDto(fetchedCustomer);
         customerDto.setAccountDto(accountMapper.accountToAccountDto(fetchedAccount));
-
         return customerDto;
     }
 
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+        AccountDto accountDto = customerDto.getAccountDto();
+        if (accountDto != null) {
+            Account fetchedAccount = accountRepository.findById(accountDto.getAccountNumber()).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "accountNumber", accountDto.getAccountNumber().toString())
+            );
+            Account account = accountMapper.accountDtoToAccount(accountDto);
+            account.setCustomerId(fetchedAccount.getCustomerId());
+            accountRepository.save(account);
+
+            Customer fetchedCustomer = customerRepository.findById(account.getCustomerId()).orElseThrow(
+                    () -> new ResourceNotFoundException("Customer", "customerId", account.getCustomerId().toString())
+            );
+            Customer customer = customerMapper.customerDtoToCustomer(customerDto);
+            customer.setCustomerId(fetchedCustomer.getCustomerId());
+            customerRepository.save(customer);
+            isUpdated = true;
+        }
+        return isUpdated;
+    }
+
     private Account createNewAccount(Customer customer) {
-        long accountNumberRandom = 1_000_000_000L + new Random().nextInt(900_000_000);
+        long accountNumberRandom = 100000000L + new Random().nextInt(900000000);
         Account account = Account.builder()
                 .customerId(customer.getCustomerId())
                 .accountNumber(accountNumberRandom)
@@ -70,7 +93,6 @@ public class AccountServiceImpl implements AccountService {
                 .branchAddress(AccountsConstants.BRANCH_ADDRESS)
                 .createdBy("system")
                 .build();
-
         return account;
     }
 }

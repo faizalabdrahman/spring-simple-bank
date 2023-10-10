@@ -16,7 +16,6 @@ public class Customer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(updatable = false, nullable = false)
     private Long customerId;
 
     private String name;

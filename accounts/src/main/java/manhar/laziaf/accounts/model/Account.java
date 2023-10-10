@@ -17,7 +17,6 @@ public class Account extends BaseEntity {
     private Long customerId;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long accountNumber;
 
     @Enumerated(EnumType.STRING)

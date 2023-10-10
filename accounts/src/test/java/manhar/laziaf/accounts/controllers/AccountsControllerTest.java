@@ -11,8 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.OffsetDateTime;
-
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,10 +52,13 @@ class AccountsControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void updateAccountDetailsTest() throws Exception {
+        // todo
+    }
+
     CustomerDto getValidCustomerDto() {
         return CustomerDto.builder()
-                .createdDate(OffsetDateTime.now())
-                .lastModifiedDate(OffsetDateTime.now())
                 .name("John Doe")
                 .email("johndoe@outlook.com")
                 .mobileNumber("123456789")
@@ -66,11 +67,11 @@ class AccountsControllerTest {
 
     AccountDto getValidAccountDto() {
         return AccountDto.builder()
-                .createdDate(OffsetDateTime.now())
-                .lastModifiedDate(OffsetDateTime.now())
                 .accountType("SAVINGS")
                 .accountNumber(1L)
                 .branchAddress("Some Address")
                 .build();
     }
+
+
 }
