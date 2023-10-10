@@ -1,4 +1,4 @@
-package manhar.laziaf.accounts.controllers;
+package manhar.laziaf.accounts.web.controllers;
 
 import manhar.laziaf.accounts.constants.AccountsConstants;
 import manhar.laziaf.accounts.services.AccountService;
