@@ -53,7 +53,12 @@ class AccountsControllerTest {
     }
 
     @Test
-    void updateAccountDetailsTest() throws Exception {
+    void updateAccountDetailsTest() {
+        // todo
+    }
+
+    @Test
+    void deleteAccountDetails() {
         // todo
     }
 
@@ -72,6 +77,4 @@ class AccountsControllerTest {
                 .branchAddress("Some Address")
                 .build();
     }
-
-
 }

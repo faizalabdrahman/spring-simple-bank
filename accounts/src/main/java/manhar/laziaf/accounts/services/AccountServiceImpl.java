@@ -84,6 +84,16 @@ public class AccountServiceImpl implements AccountService {
         return isUpdated;
     }
 
+    @Override
+    public boolean deleteAccount(String mobileNumber) {
+        Customer fetchedCustomer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "customerId", mobileNumber)
+        );
+        accountRepository.deleteByCustomerId(fetchedCustomer.getCustomerId());
+        customerRepository.deleteById(fetchedCustomer.getCustomerId());
+        return true;
+    }
+
     private Account createNewAccount(Customer customer) {
         long accountNumberRandom = 100000000L + new Random().nextInt(900000000);
         Account account = Account.builder()
