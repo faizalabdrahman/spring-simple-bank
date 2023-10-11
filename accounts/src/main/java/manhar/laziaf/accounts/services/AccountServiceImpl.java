@@ -36,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void createAccount(CustomerDto customerDto) {
+    public AccountDto createAccount(CustomerDto customerDto) {
         Optional<Customer> customerOptional = customerRepository.findByMobileNumber(customerDto.getMobileNumber());
         if (customerOptional.isPresent()) {
             throw new CustomerAlreadyExistsException("Customer already registered with given mobile number "
@@ -46,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
         customer.setCreatedBy("System");
         Customer savedCustomer = customerRepository.save(customer);
         Account savedAccount = accountRepository.save(createNewAccount(savedCustomer));
+        return accountMapper.accountToAccountDto(savedAccount);
     }
 
     @Override
@@ -62,8 +63,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean updateAccount(CustomerDto customerDto) {
-        boolean isUpdated = false;
+    public CustomerDto updateAccount(CustomerDto customerDto) {
         AccountDto accountDto = customerDto.getAccountDto();
         if (accountDto != null) {
             Account fetchedAccount = accountRepository.findById(accountDto.getAccountNumber()).orElseThrow(
@@ -71,17 +71,21 @@ public class AccountServiceImpl implements AccountService {
             );
             Account account = accountMapper.accountDtoToAccount(accountDto);
             account.setCustomerId(fetchedAccount.getCustomerId());
-            accountRepository.save(account);
+            Account savedAccount = accountRepository.save(account);
 
             Customer fetchedCustomer = customerRepository.findById(account.getCustomerId()).orElseThrow(
                     () -> new ResourceNotFoundException("Customer", "customerId", account.getCustomerId().toString())
             );
             Customer customer = customerMapper.customerDtoToCustomer(customerDto);
             customer.setCustomerId(fetchedCustomer.getCustomerId());
-            customerRepository.save(customer);
-            isUpdated = true;
+            Customer savedCustomer = customerRepository.save(customer);
+
+            CustomerDto savedCustomerDto = customerMapper.customerToCustomerDto(savedCustomer);
+            AccountDto savedAccountDto = accountMapper.accountToAccountDto(savedAccount);
+            savedCustomerDto.setAccountDto(savedAccountDto);
+            return savedCustomerDto;
         }
-        return isUpdated;
+        return null;
     }
 
     @Override
