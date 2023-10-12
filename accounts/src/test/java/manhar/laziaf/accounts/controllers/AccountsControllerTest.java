@@ -66,14 +66,14 @@ class AccountsControllerTest {
         return CustomerDto.builder()
                 .name("John Doe")
                 .email("johndoe@outlook.com")
-                .mobileNumber("123456789")
+                .mobileNumber("12345678")
                 .build();
     }
 
     AccountDto getValidAccountDto() {
         return AccountDto.builder()
                 .accountType("SAVINGS")
-                .accountNumber(1L)
+                .accountNumber(123456789L)
                 .branchAddress("Some Address")
                 .build();
     }
