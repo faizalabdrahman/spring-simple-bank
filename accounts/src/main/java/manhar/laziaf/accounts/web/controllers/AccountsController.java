@@ -9,8 +9,10 @@ import jakarta.validation.constraints.Pattern;
 import manhar.laziaf.accounts.constants.AccountsConstants;
 import manhar.laziaf.accounts.services.AccountService;
 import manhar.laziaf.accounts.web.dto.AccountDto;
+import manhar.laziaf.accounts.web.dto.AccountsContactInfoDto;
 import manhar.laziaf.accounts.web.dto.CustomerDto;
 import manhar.laziaf.accounts.web.dto.ResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api/v1/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Validated
 public class AccountsController {
+
+    @Autowired
+    private AccountsContactInfoDto accountsContactInfoDto;
 
     private final AccountService accountService;
 
@@ -106,5 +111,18 @@ public class AccountsController {
             return new ResponseEntity<>(new ResponseDto(AccountsConstants.MESSAGE_200), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ResponseDto(AccountsConstants.MESSAGE_500), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Operation(
+            summary = "Get Contact Info",
+            description = "Contact info details that can be reach out in case of any issues"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description =  "HTTP status ok"
+    )
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+        return new ResponseEntity<>(accountsContactInfoDto, HttpStatus.OK);
     }
 }

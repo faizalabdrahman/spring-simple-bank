@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    # profile used to read from classpath
+    # active: native
+    # profile used to read config from git
+    active: git
+  cloud:
+    config:
+      server:
+        native:
+          # read config from path location
+          # search-locations: "classpath:/config"
+        git:
+          uri: "https://github.com/faizalabdrahman/spring-simple-bank-config.git"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+
+server:
+  port: 8071
