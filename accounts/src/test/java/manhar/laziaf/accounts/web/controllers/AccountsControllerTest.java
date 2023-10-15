@@ -1,4 +1,4 @@
-package manhar.laziaf.accounts.controllers;
+package manhar.laziaf.accounts.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import manhar.laziaf.accounts.services.AccountService;

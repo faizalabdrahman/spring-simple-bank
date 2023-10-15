@@ -1,9 +1,14 @@
 package manhar.laziaf.accounts.web.dto;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Map;
 
 @ConfigurationProperties(prefix = "accounts")
-public record AccountsContactInfoDto(String message, Map<String, String> contactDetails) {
+@Data
+public class AccountsContactInfoDto {
+
+    private String message;
+    private Map<String, String> contactDetails;
 }
