@@ -1,3 +1,6 @@
+server:
+  port: 8071
+
 spring:
   application:
     name: "configserver"
@@ -9,7 +12,7 @@ spring:
   cloud:
     config:
       server:
-        native:
+        # native:
           # read config from path location
           # search-locations: "classpath:/config"
         git:
@@ -21,15 +24,8 @@ spring:
   rabbitmq:
     host: "localhost"
     port: 5672
-    stream:
-      username: "guest"
-      password: "guest"
-
-encrypt:
-  key: "CY8nu6Z3k9UeSajYhzN0wpAPuSq2ENML"
-
-server:
-  port: 8071
+    username: "guest"
+    password: "guest"
 
 management:
   endpoints:

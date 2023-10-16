@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(AccountsContactInfoDto.class)
+@EnableConfigurationProperties(value = AccountsContactInfoDto.class)
 @OpenAPIDefinition(
 		info = @Info(
 				title = "Simple Bank Accounts Microservice REST API Documentation",
