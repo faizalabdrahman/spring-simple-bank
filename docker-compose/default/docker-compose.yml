@@ -15,6 +15,16 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  accountsdb:
+    container_name: accountsdb
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: accountsdb
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
   configserver:
     image: "faizalabdrahman/configserver:0.0.1"
     container_name: configserver-ms
@@ -40,10 +50,11 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      configserver:
+      accountsdb:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: accounts
+      SPRING_DATASOURCE_URL: "jdbc:mysql://accountsdb:3306/accountsdb"
     extends:
       file: common-config.yml
       service: microservice-configserver-config
