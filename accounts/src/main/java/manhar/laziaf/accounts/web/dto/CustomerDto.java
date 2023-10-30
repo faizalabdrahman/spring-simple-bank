@@ -21,6 +21,7 @@ public class CustomerDto {
     @NotEmpty(message = "Name cannot be null or empty")
     private String email;
 
+    @NotEmpty(message = "Mobile number must not be null or empty")
     @Pattern(regexp = "(^$|[0-9]{8})", message = "Mobile number must be 8 digits")
     private String mobileNumber;
 
